@@ -27,7 +27,7 @@ class BeePlanApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("BeePlan - Course Scheduler")
-        self.setGeometry(100, 100, 1000, 700)
+        self.setGeometry(100, 100, 1400, 900)  # Larger window for better visibility
         
         # Backend components
         self.scheduler: Optional[Scheduler] = None
@@ -43,9 +43,37 @@ class BeePlanApp(QMainWindow):
         
         # Üst Başlık
         self.header_label = QLabel("Department Course Schedule")
-        self.header_label.setFont(QFont("Arial", 16, QFont.Bold))
+        self.header_label.setFont(QFont("Arial", 18, QFont.Bold))
         self.header_label.setAlignment(Qt.AlignCenter)
+        self.header_label.setStyleSheet("padding: 10px; background-color: #f0f0f0; border-radius: 5px;")
         self.layout.addWidget(self.header_label)
+        
+        # Legend for color coding
+        legend_layout = QHBoxLayout()
+        legend_label = QLabel("Legend: ")
+        legend_label.setFont(QFont("Arial", 9))
+        legend_layout.addWidget(legend_label)
+        
+        # Theory course color indicator
+        theory_indicator = QLabel("Theory")
+        theory_indicator.setStyleSheet("background-color: #f0f8ff; color: #00008b; padding: 5px 10px; border-radius: 3px;")
+        theory_indicator.setFont(QFont("Arial", 9))
+        legend_layout.addWidget(theory_indicator)
+        
+        # Lab course color indicator
+        lab_indicator = QLabel("Lab")
+        lab_indicator.setStyleSheet("background-color: #f0fff0; color: #006400; padding: 5px 10px; border-radius: 3px;")
+        lab_indicator.setFont(QFont("Arial", 9))
+        legend_layout.addWidget(lab_indicator)
+        
+        # Conflict color indicator
+        conflict_indicator = QLabel("Conflict")
+        conflict_indicator.setStyleSheet("background-color: #ffc8c8; color: #8b0000; padding: 5px 10px; border-radius: 3px;")
+        conflict_indicator.setFont(QFont("Arial", 9))
+        legend_layout.addWidget(conflict_indicator)
+        
+        legend_layout.addStretch()  # Push legend to left
+        self.layout.addLayout(legend_layout)
 
         # Tablo (Weekly Timetable View) [Cite: 19]
         self.schedule_table = QTableWidget()
@@ -95,6 +123,12 @@ class BeePlanApp(QMainWindow):
         # Tablo ayarları: Hücreleri ekrana yay
         header = self.schedule_table.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.Stretch)
+        
+        # Set row height for better readability
+        self.schedule_table.verticalHeader().setDefaultSectionSize(100)
+        
+        # Enable word wrap for better text display
+        self.schedule_table.setWordWrap(True)
         
         # Cuma günü Sınav Bloğunu İşaretle (Kural: 13:20-15:10 Friday) [Cite: 24]
         # 13:20 (Index 4) ve 14:20 (Index 5), Cuma (Sütun 4)
@@ -244,25 +278,52 @@ class BeePlanApp(QMainWindow):
                 if cell:
                     course = cell['course']
                     room = cell['room']
+                    instructor = cell.get('instructor', 'N/A')
                     has_conflict = cell['has_conflict']
                     
-                    # Format text
-                    text = f"{course.code}\n{course.name}"
+                    # Format text with better layout
+                    # Course code and name
+                    text = f"📚 {course.code}\n{course.name}"
+                    
+                    # Room information
                     if room:
-                        text += f"\nRoom: {room.id}"
+                        room_type = "🔬 LAB" if room.is_lab else "🏫 Room"
+                        text += f"\n\n{room_type}: {room.id}"
+                    
+                    # Instructor information
+                    text += f"\n👤 {instructor}"
+                    
+                    # Lab indicator
                     if course.is_lab:
-                        text += " [LAB]"
+                        text += "\n[LAB SESSION]"
                     
                     self.add_course_to_grid(row_idx, col_idx, text, has_conflict)
 
     def add_course_to_grid(self, row, col, text, has_conflict=False):
         """Tabloya ders ekler ve gerekirse renklendirir [Cite: 20]"""
         item = QTableWidgetItem(text)
-        item.setTextAlignment(Qt.AlignCenter)
+        item.setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter)
+        
+        # Set font for better readability
+        font = QFont("Arial", 9)
+        item.setFont(font)
+        
+        # Color coding
         if has_conflict:
-            item.setBackground(QColor(255, 100, 100)) # Kırmızı uyarı
+            item.setBackground(QColor(255, 200, 200))  # Light red for conflicts
+            item.setForeground(QColor(139, 0, 0))  # Dark red text
         else:
-            item.setBackground(QColor(220, 240, 255)) # Açık mavi
+            # Different colors for labs vs theory
+            if "[LAB SESSION]" in text:
+                item.setBackground(QColor(240, 255, 240))  # Light green for labs
+                item.setForeground(QColor(0, 100, 0))  # Dark green text
+            else:
+                item.setBackground(QColor(240, 248, 255))  # Light blue for theory
+                item.setForeground(QColor(0, 0, 139))  # Dark blue text
+        
+        # Make item selectable but not editable
+        item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsSelectable)
+        
         self.schedule_table.setItem(row, col, item)
 
 if __name__ == "__main__":

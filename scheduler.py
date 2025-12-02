@@ -291,9 +291,14 @@ class Scheduler:
             for day in self.days:
                 slot = self.schedule[day][time_slot]
                 if slot.course:
+                    # Get instructor information
+                    instructor = self.instructors.get(slot.course.instructor_id)
+                    instructor_name = instructor.name if instructor else f"Instructor {slot.course.instructor_id}"
+                    
                     row.append({
                         "course": slot.course,
                         "room": slot.room,
+                        "instructor": instructor_name,
                         "has_conflict": slot.has_conflict
                     })
                 else:
