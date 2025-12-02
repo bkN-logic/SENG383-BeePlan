@@ -1,0 +1,30 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run BeePlan",
+            "type": "shell",
+            "command": "python3",
+            "args": [
+                "${workspaceFolder}/main.py"
+            ],
+            "options": {
+                "env": {
+                    "QT_MAC_WANTS_LAYER": "1",
+                    "QT_AUTO_SCREEN_SCALE_FACTOR": "1",
+                    "QT_QPA_PLATFORM": "cocoa"
+                }
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
+

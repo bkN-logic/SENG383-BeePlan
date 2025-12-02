@@ -1,0 +1,33 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: BeePlan",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "env": {
+                "QT_MAC_WANTS_LAYER": "1",
+                "QT_AUTO_SCREEN_SCALE_FACTOR": "1",
+                "QT_QPA_PLATFORM": "cocoa"
+            },
+            "python": "${command:python.interpreterPath}"
+        },
+        {
+            "name": "Python: BeePlan (Current File)",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "env": {
+                "QT_MAC_WANTS_LAYER": "1",
+                "QT_AUTO_SCREEN_SCALE_FACTOR": "1",
+                "QT_QPA_PLATFORM": "cocoa"
+            },
+            "python": "${command:python.interpreterPath}"
+        }
+    ]
+}

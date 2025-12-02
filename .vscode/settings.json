@@ -1,0 +1,11 @@
+{
+    "python.defaultInterpreterPath": "python3",
+    "python.terminal.activateEnvironment": true,
+    "files.associations": {
+        "*.py": "python"
+    },
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": false
+}
+

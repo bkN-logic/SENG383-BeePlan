@@ -1,0 +1,545 @@
+{
+  "instructors": [
+    {
+      "id": 1,
+      "name": "Dr. Sarah Smith",
+      "availability": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+    },
+    {
+      "id": 2,
+      "name": "Dr. Michael Jones",
+      "availability": ["Monday", "Wednesday", "Friday"]
+    },
+    {
+      "id": 3,
+      "name": "Dr. Emily Brown",
+      "availability": ["Tuesday", "Thursday", "Friday"]
+    },
+    {
+      "id": 4,
+      "name": "Dr. David Wilson",
+      "availability": ["Monday", "Tuesday", "Thursday", "Friday"]
+    },
+    {
+      "id": 5,
+      "name": "Dr. Jennifer Martinez",
+      "availability": ["Monday", "Tuesday", "Wednesday"]
+    },
+    {
+      "id": 6,
+      "name": "Dr. Robert Taylor",
+      "availability": ["Tuesday", "Wednesday", "Thursday"]
+    },
+    {
+      "id": 7,
+      "name": "Dr. Lisa Anderson",
+      "availability": ["Monday", "Wednesday", "Thursday", "Friday"]
+    },
+    {
+      "id": 8,
+      "name": "Dr. James White",
+      "availability": ["Monday", "Tuesday", "Thursday"]
+    },
+    {
+      "id": 9,
+      "name": "Dr. Maria Garcia",
+      "availability": ["Tuesday", "Wednesday", "Friday"]
+    },
+    {
+      "id": 10,
+      "name": "Dr. Christopher Lee",
+      "availability": ["Monday", "Wednesday", "Thursday", "Friday"]
+    }
+  ],
+  "rooms": [
+    {
+      "id": "A101",
+      "capacity": 60,
+      "is_lab": false
+    },
+    {
+      "id": "A102",
+      "capacity": 70,
+      "is_lab": false
+    },
+    {
+      "id": "A103",
+      "capacity": 50,
+      "is_lab": false
+    },
+    {
+      "id": "A201",
+      "capacity": 80,
+      "is_lab": false
+    },
+    {
+      "id": "A202",
+      "capacity": 65,
+      "is_lab": false
+    },
+    {
+      "id": "A301",
+      "capacity": 55,
+      "is_lab": false
+    },
+    {
+      "id": "LAB1",
+      "capacity": 30,
+      "is_lab": true
+    },
+    {
+      "id": "LAB2",
+      "capacity": 35,
+      "is_lab": true
+    },
+    {
+      "id": "LAB3",
+      "capacity": 40,
+      "is_lab": true
+    },
+    {
+      "id": "LAB4",
+      "capacity": 25,
+      "is_lab": true
+    },
+    {
+      "id": "LAB5",
+      "capacity": 30,
+      "is_lab": true
+    }
+  ],
+  "courses": [
+    {
+      "code": "CS101",
+      "name": "Introduction to Computer Science",
+      "instructor_id": 1,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 1
+    },
+    {
+      "code": "CS101",
+      "name": "Introduction to Computer Science",
+      "instructor_id": 1,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 1
+    },
+    {
+      "code": "CS101L",
+      "name": "CS101 Programming Lab",
+      "instructor_id": 1,
+      "duration_hours": 1,
+      "is_lab": true,
+      "year": 1
+    },
+    {
+      "code": "CS101L",
+      "name": "CS101 Programming Lab",
+      "instructor_id": 1,
+      "duration_hours": 1,
+      "is_lab": true,
+      "year": 1
+    },
+    {
+      "code": "MATH101",
+      "name": "Calculus I",
+      "instructor_id": 2,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 1
+    },
+    {
+      "code": "MATH101",
+      "name": "Calculus I",
+      "instructor_id": 2,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 1
+    },
+    {
+      "code": "PHYS101",
+      "name": "Physics I",
+      "instructor_id": 3,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 1
+    },
+    {
+      "code": "PHYS101",
+      "name": "Physics I",
+      "instructor_id": 3,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 1
+    },
+    {
+      "code": "ENG101",
+      "name": "Technical Writing",
+      "instructor_id": 4,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 1
+    },
+    {
+      "code": "CS102",
+      "name": "Object-Oriented Programming",
+      "instructor_id": 5,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 1
+    },
+    {
+      "code": "CS102",
+      "name": "Object-Oriented Programming",
+      "instructor_id": 5,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 1
+    },
+    {
+      "code": "CS102L",
+      "name": "OOP Lab",
+      "instructor_id": 5,
+      "duration_hours": 1,
+      "is_lab": true,
+      "year": 1
+    },
+    {
+      "code": "CS201",
+      "name": "Data Structures",
+      "instructor_id": 2,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 2
+    },
+    {
+      "code": "CS201",
+      "name": "Data Structures",
+      "instructor_id": 2,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 2
+    },
+    {
+      "code": "CS201L",
+      "name": "Data Structures Lab",
+      "instructor_id": 2,
+      "duration_hours": 1,
+      "is_lab": true,
+      "year": 2
+    },
+    {
+      "code": "CS201L",
+      "name": "Data Structures Lab",
+      "instructor_id": 2,
+      "duration_hours": 1,
+      "is_lab": true,
+      "year": 2
+    },
+    {
+      "code": "CS202",
+      "name": "Discrete Mathematics",
+      "instructor_id": 6,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 2
+    },
+    {
+      "code": "CS202",
+      "name": "Discrete Mathematics",
+      "instructor_id": 6,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 2
+    },
+    {
+      "code": "CS203",
+      "name": "Computer Organization",
+      "instructor_id": 7,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 2
+    },
+    {
+      "code": "CS203",
+      "name": "Computer Organization",
+      "instructor_id": 7,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 2
+    },
+    {
+      "code": "CS203L",
+      "name": "Computer Organization Lab",
+      "instructor_id": 7,
+      "duration_hours": 1,
+      "is_lab": true,
+      "year": 2
+    },
+    {
+      "code": "CS204",
+      "name": "Database Systems",
+      "instructor_id": 8,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 2
+    },
+    {
+      "code": "CS204",
+      "name": "Database Systems",
+      "instructor_id": 8,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 2
+    },
+    {
+      "code": "CS204L",
+      "name": "Database Systems Lab",
+      "instructor_id": 8,
+      "duration_hours": 1,
+      "is_lab": true,
+      "year": 2
+    },
+    {
+      "code": "CS301",
+      "name": "Algorithms",
+      "instructor_id": 3,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 3
+    },
+    {
+      "code": "CS301",
+      "name": "Algorithms",
+      "instructor_id": 3,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 3
+    },
+    {
+      "code": "CS301",
+      "name": "Algorithms",
+      "instructor_id": 3,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 3
+    },
+    {
+      "code": "CS302",
+      "name": "Operating Systems",
+      "instructor_id": 4,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 3
+    },
+    {
+      "code": "CS302",
+      "name": "Operating Systems",
+      "instructor_id": 4,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 3
+    },
+    {
+      "code": "CS302L",
+      "name": "Operating Systems Lab",
+      "instructor_id": 4,
+      "duration_hours": 1,
+      "is_lab": true,
+      "year": 3
+    },
+    {
+      "code": "CS302L",
+      "name": "Operating Systems Lab",
+      "instructor_id": 4,
+      "duration_hours": 1,
+      "is_lab": true,
+      "year": 3
+    },
+    {
+      "code": "CS303",
+      "name": "Software Engineering",
+      "instructor_id": 9,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 3
+    },
+    {
+      "code": "CS303",
+      "name": "Software Engineering",
+      "instructor_id": 9,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 3
+    },
+    {
+      "code": "CS303L",
+      "name": "Software Engineering Lab",
+      "instructor_id": 9,
+      "duration_hours": 1,
+      "is_lab": true,
+      "year": 3
+    },
+    {
+      "code": "CS304",
+      "name": "Computer Networks",
+      "instructor_id": 10,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 3
+    },
+    {
+      "code": "CS304",
+      "name": "Computer Networks",
+      "instructor_id": 10,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 3
+    },
+    {
+      "code": "CS304L",
+      "name": "Computer Networks Lab",
+      "instructor_id": 10,
+      "duration_hours": 1,
+      "is_lab": true,
+      "year": 3
+    },
+    {
+      "code": "CS305",
+      "name": "Artificial Intelligence",
+      "instructor_id": 1,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 3
+    },
+    {
+      "code": "CS305",
+      "name": "Artificial Intelligence",
+      "instructor_id": 1,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 3
+    },
+    {
+      "code": "CENG401",
+      "name": "Computer Architecture",
+      "instructor_id": 7,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 4
+    },
+    {
+      "code": "CENG401",
+      "name": "Computer Architecture",
+      "instructor_id": 7,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 4
+    },
+    {
+      "code": "CENG401L",
+      "name": "Computer Architecture Lab",
+      "instructor_id": 7,
+      "duration_hours": 1,
+      "is_lab": true,
+      "year": 4
+    },
+    {
+      "code": "CENG402",
+      "name": "Embedded Systems",
+      "instructor_id": 5,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 4
+    },
+    {
+      "code": "CENG402",
+      "name": "Embedded Systems",
+      "instructor_id": 5,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 4
+    },
+    {
+      "code": "SENG401",
+      "name": "Software Design Patterns",
+      "instructor_id": 9,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 4
+    },
+    {
+      "code": "SENG401",
+      "name": "Software Design Patterns",
+      "instructor_id": 9,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 4
+    },
+    {
+      "code": "SENG402",
+      "name": "Web Development",
+      "instructor_id": 8,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 4
+    },
+    {
+      "code": "SENG402",
+      "name": "Web Development",
+      "instructor_id": 8,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 4
+    },
+    {
+      "code": "SENG402L",
+      "name": "Web Development Lab",
+      "instructor_id": 8,
+      "duration_hours": 1,
+      "is_lab": true,
+      "year": 4
+    },
+    {
+      "code": "CS401",
+      "name": "Capstone Project",
+      "instructor_id": 1,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 4
+    },
+    {
+      "code": "CS401",
+      "name": "Capstone Project",
+      "instructor_id": 1,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 4
+    },
+    {
+      "code": "CS402",
+      "name": "Machine Learning",
+      "instructor_id": 6,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 4
+    },
+    {
+      "code": "CS402",
+      "name": "Machine Learning",
+      "instructor_id": 6,
+      "duration_hours": 1,
+      "is_lab": false,
+      "year": 4
+    },
+    {
+      "code": "CS402L",
+      "name": "Machine Learning Lab",
+      "instructor_id": 6,
+      "duration_hours": 1,
+      "is_lab": true,
+      "year": 4
+    }
+  ]
+}
