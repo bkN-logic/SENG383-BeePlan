@@ -2,6 +2,7 @@
 Scheduling Algorithm Module
 Implements constraint-based scheduling with conflict detection
 """
+import random
 from typing import List, Dict, Optional, Tuple
 from dataclasses import dataclass
 from models import Course, Room, Instructor, ScheduleSlot
@@ -69,6 +70,18 @@ class Scheduler:
                     
                     # Check if slot is free
                     if self.schedule[day][time_slot].course is not None:
+                        continue
+                    
+                    # REALISTIC SCHEDULING: Leave gaps for breaks (1-4 hours as requested)
+                    # 1. Check if this would create too many consecutive hours (max 4 hours)
+                    # This ensures students have breaks between classes
+                    if self._would_create_too_many_consecutive_hours(day, i):
+                        continue
+                    
+                    # 2. Randomly leave some slots empty (10% chance) to create natural breaks
+                    # This makes schedules more realistic - not every slot filled
+                    # Creates gaps of 1-4 hours between courses (meal breaks, study time, etc.)
+                    if random.random() < 0.10:  # 10% chance to skip this slot for break
                         continue
                     
                     # Check lab must follow theory constraint
@@ -178,6 +191,53 @@ class Scheduler:
         slot = self.schedule[day][time_slot]
         # Room is available if no course is scheduled in this slot
         return slot.course is None
+    
+    def _would_create_too_many_consecutive_hours(self, day: str, time_index: int) -> bool:
+        """
+        Check if placing a course at this time would create too many consecutive hours.
+        Students should have breaks (1-4 hours) between classes.
+        Maximum consecutive hours: 4 hours (realistic college schedule)
+        """
+        # Count consecutive courses before this slot
+        consecutive_before = 0
+        for i in range(time_index - 1, -1, -1):
+            if self.schedule[day][self.time_slots[i]].course is not None:
+                consecutive_before += 1
+            else:
+                break
+        
+        # Count courses after this slot
+        consecutive_after = 0
+        for i in range(time_index + 1, len(self.time_slots)):
+            if self.schedule[day][self.time_slots[i]].course is not None:
+                consecutive_after += 1
+            else:
+                break
+        
+        # Total consecutive hours if we place this course
+        total_consecutive = consecutive_before + 1 + consecutive_after
+        
+        # Maximum 4 consecutive hours allowed (realistic limit)
+        # This ensures students have breaks between classes
+        if total_consecutive > 4:
+            return True
+        
+        # If there are already 3 consecutive hours before, require a break
+        # This creates natural gaps in the schedule (students need breaks)
+        if consecutive_before >= 3:
+            return True  # Need a break after 3 hours
+        
+        # Ensure lunch break: Don't schedule at slot 3 (11:30-12:20) if there are 2+ courses before
+        # This creates a natural lunch break (12:20-13:20 gap)
+        if time_index == 3 and consecutive_before >= 2:
+            return True  # Need lunch break
+        
+        # Don't schedule right after lunch (slot 4, 13:20-14:10) if there are many courses after
+        # This prevents back-to-back scheduling after lunch
+        if time_index == 4 and consecutive_after >= 3:
+            return True  # Too many courses after lunch
+        
+        return False
     
     def _check_instructor_daily_limit(self, instructor_id: int, day: str, 
                                      instructor_hours: Dict[int, Dict[str, int]]) -> bool:

@@ -85,6 +85,63 @@ class DataManager:
         return instructors
     
     @staticmethod
+    def export_schedule_to_json(scheduler, filepath: str):
+        """Export schedule to JSON file"""
+        schedule_data = {
+            "days": scheduler.days,
+            "time_slots": scheduler.time_slots,
+            "schedule": {}
+        }
+        
+        for day in scheduler.days:
+            schedule_data["schedule"][day] = {}
+            for time_slot in scheduler.time_slots:
+                slot = scheduler.schedule[day][time_slot]
+                if slot.course:
+                    schedule_data["schedule"][day][time_slot] = {
+                        "course_code": slot.course.code,
+                        "course_name": slot.course.name,
+                        "instructor_id": slot.course.instructor_id,
+                        "instructor_name": scheduler.instructors.get(slot.course.instructor_id).name if scheduler.instructors.get(slot.course.instructor_id) else f"Instructor {slot.course.instructor_id}",
+                        "room_id": slot.room.id if slot.room else None,
+                        "room_capacity": slot.room.capacity if slot.room else None,
+                        "is_lab": slot.course.is_lab,
+                        "year": slot.course.year,
+                        "has_conflict": slot.has_conflict
+                    }
+                else:
+                    schedule_data["schedule"][day][time_slot] = None
+        
+        DataManager.save_to_json(schedule_data, filepath)
+    
+    @staticmethod
+    def export_schedule_to_csv(scheduler, filepath: str):
+        """Export schedule to CSV file"""
+        rows = []
+        for day in scheduler.days:
+            for time_slot in scheduler.time_slots:
+                slot = scheduler.schedule[day][time_slot]
+                if slot.course:
+                    instructor = scheduler.instructors.get(slot.course.instructor_id)
+                    instructor_name = instructor.name if instructor else f"Instructor {slot.course.instructor_id}"
+                    
+                    rows.append({
+                        "Day": day,
+                        "Time": time_slot,
+                        "Course Code": slot.course.code,
+                        "Course Name": slot.course.name,
+                        "Instructor": instructor_name,
+                        "Room": slot.room.id if slot.room else "N/A",
+                        "Room Type": "Lab" if slot.room.is_lab else "Classroom" if slot.room else "N/A",
+                        "Year": slot.course.year,
+                        "Type": "Lab" if slot.course.is_lab else "Theory",
+                        "Conflict": "Yes" if slot.has_conflict else "No"
+                    })
+        
+        fieldnames = ["Day", "Time", "Course Code", "Course Name", "Instructor", "Room", "Room Type", "Year", "Type", "Conflict"]
+        DataManager.save_to_csv(rows, filepath, fieldnames)
+    
+    @staticmethod
     def create_sample_data() -> Dict:
         """Create sample data for testing"""
         return {

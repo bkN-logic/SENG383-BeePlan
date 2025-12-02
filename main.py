@@ -98,9 +98,21 @@ class BeePlanApp(QMainWindow):
         self.btn_report.setStyleSheet("background-color: #2196F3; color: white; padding: 10px;")
         self.btn_report.clicked.connect(self.handle_report)
 
+        # Export Schedule Button
+        self.btn_export = QPushButton("Export Schedule")
+        self.btn_export.setStyleSheet("background-color: #9C27B0; color: white; padding: 10px;")
+        self.btn_export.clicked.connect(self.handle_export_schedule)
+        
+        # Import Schedule Button
+        self.btn_import = QPushButton("Import Schedule")
+        self.btn_import.setStyleSheet("background-color: #607D8B; color: white; padding: 10px;")
+        self.btn_import.clicked.connect(self.handle_import_schedule)
+
         self.button_layout.addWidget(self.btn_load)
         self.button_layout.addWidget(self.btn_generate)
         self.button_layout.addWidget(self.btn_report)
+        self.button_layout.addWidget(self.btn_export)
+        self.button_layout.addWidget(self.btn_import)
         self.layout.addLayout(self.button_layout)
         
         # Load sample data on startup
@@ -203,7 +215,7 @@ class BeePlanApp(QMainWindow):
                                   f"{len(self.instructors)} instructors")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to load data: {str(e)}")
-    
+
     def handle_generate(self):
         """Generate schedule using backend algorithm"""
         if not self.scheduler:
@@ -228,7 +240,7 @@ class BeePlanApp(QMainWindow):
             QMessageBox.warning(self, "Schedule Generated with Conflicts", 
                               f"Schedule generated but {len(conflicts)} conflict(s) detected.\n"
                               "Click 'View Report' for details.")
-    
+
     def handle_report(self):
         """Display validation report [Cite: 13]"""
         if not self.report_generator:
@@ -254,6 +266,122 @@ class BeePlanApp(QMainWindow):
         layout.addWidget(close_btn)
         
         dialog.exec_()
+    
+    def handle_export_schedule(self):
+        """Export current schedule to JSON or CSV file"""
+        if not self.scheduler:
+            QMessageBox.warning(self, "No Schedule", "Please generate a schedule first.")
+            return
+        
+        # Ask user to choose file format
+        filepath, selected_filter = QFileDialog.getSaveFileName(
+            self, 
+            "Export Schedule", 
+            "", 
+            "JSON Files (*.json);;CSV Files (*.csv);;All Files (*)"
+        )
+        
+        if not filepath:
+            return
+        
+        try:
+            data_manager = DataManager()
+            
+            if selected_filter.startswith("JSON") or filepath.endswith('.json'):
+                if not filepath.endswith('.json'):
+                    filepath += '.json'
+                data_manager.export_schedule_to_json(self.scheduler, filepath)
+                QMessageBox.information(self, "Export Successful", 
+                                      f"Schedule exported to:\n{filepath}")
+            elif selected_filter.startswith("CSV") or filepath.endswith('.csv'):
+                if not filepath.endswith('.csv'):
+                    filepath += '.csv'
+                data_manager.export_schedule_to_csv(self.scheduler, filepath)
+                QMessageBox.information(self, "Export Successful", 
+                                      f"Schedule exported to:\n{filepath}")
+            else:
+                QMessageBox.warning(self, "Invalid Format", "Please choose JSON or CSV format.")
+        except Exception as e:
+            QMessageBox.critical(self, "Export Error", f"Failed to export schedule:\n{str(e)}")
+    
+    def handle_import_schedule(self):
+        """Import schedule from JSON file"""
+        if not self.scheduler:
+            QMessageBox.warning(self, "No Scheduler", "Please load data and initialize scheduler first.")
+            return
+        
+        filepath, _ = QFileDialog.getOpenFileName(
+            self, 
+            "Import Schedule", 
+            "", 
+            "JSON Files (*.json);;All Files (*)"
+        )
+        
+        if not filepath:
+            return
+        
+        try:
+            data_manager = DataManager()
+            schedule_data = data_manager.load_from_json(filepath)
+            
+            # Validate schedule data structure
+            if 'schedule' not in schedule_data:
+                raise ValueError("Invalid schedule file format")
+            
+            # Clear current schedule
+            for day in self.scheduler.days:
+                for time_slot in self.scheduler.time_slots:
+                    slot = self.scheduler.schedule[day][time_slot]
+                    if slot.course:
+                        slot.course = None
+                        slot.room = None
+                        slot.has_conflict = False
+            
+            # Import schedule from JSON
+            imported_count = 0
+            for day in schedule_data.get('schedule', {}):
+                if day not in self.scheduler.days:
+                    continue
+                for time_slot, slot_data in schedule_data['schedule'][day].items():
+                    if time_slot not in self.scheduler.time_slots:
+                        continue
+                    if slot_data is None:
+                        continue
+                    
+                    # Find course by code
+                    course_code = slot_data.get('course_code')
+                    course = None
+                    for c in self.courses:
+                        if c.code == course_code:
+                            course = c
+                            break
+                    
+                    if not course:
+                        continue
+                    
+                    # Find room by ID
+                    room_id = slot_data.get('room_id')
+                    room = None
+                    if room_id:
+                        for r in self.rooms:
+                            if r.id == room_id:
+                                room = r
+                                break
+                    
+                    # Place course in schedule
+                    slot = self.scheduler.schedule[day][time_slot]
+                    slot.course = course
+                    slot.room = room
+                    slot.has_conflict = slot_data.get('has_conflict', False)
+                    imported_count += 1
+            
+            # Refresh display
+            self.display_schedule()
+            
+            QMessageBox.information(self, "Import Successful", 
+                                  f"Imported {imported_count} course sessions from:\n{filepath}")
+        except Exception as e:
+            QMessageBox.critical(self, "Import Error", f"Failed to import schedule:\n{str(e)}")
     
     def clear_schedule_table(self):
         """Clear all course entries from table (keep exam blocks)"""
